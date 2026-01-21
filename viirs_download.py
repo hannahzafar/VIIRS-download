@@ -110,7 +110,28 @@ def main():
         # bounding_box = (-51.96423,68.10554,-48.71969,70.70529)
     )
     # print(len(results))
+    # print("\n")
+    # results_1 = results[:10]
+    # results_2 = results[-10:]
+    # results = results_1 + results_2
+    # i = 0
+    # for item in results:
+    #     # while i < 5:
+    #     print(item)
+    #     print("\n")
+    #     i += 1
     # print(results[0])
+    # print(results[:15])
+    with open("granules.txt", "w") as file:
+        for granule in results:
+            granule = str(granule)
+            file.write(granule)
+            file.write("\n\n")
+
+    import sys
+
+    sys.exit()
+
     if len(results) < 1:
         print("No matching results found. Check input arguments")
         return
