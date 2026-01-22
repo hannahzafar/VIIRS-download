@@ -5,6 +5,7 @@ Script to download VIIRS data using earthaccess with .netrc authentication.
 
 import argparse
 import datetime
+import os
 
 import earthaccess
 
@@ -119,6 +120,14 @@ def main():
     download_folder = (
         f"{args.product}_V{args.version}_{args.start_date}_{args.end_date}"
     )
+
+    # Make sure to not overwrite existing
+    try:
+        os.makedirs(download_folder, exist_ok=False)
+    except FileExistsError as e:
+        print(e)
+        return
+
     # print(download_folder)
     files = earthaccess.download(results, download_folder)
     print(f"{len(files)} files downloaded to {download_folder}")
