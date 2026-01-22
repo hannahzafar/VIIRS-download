@@ -60,6 +60,14 @@ def parse_arguments():
     )
 
     parser.add_argument(
+        "-gs",
+        "--granule-string",
+        type=str,
+        required=False,
+        help="VIIRS product wildcard string (fix for 16-day running average products)",
+    )
+
+    parser.add_argument(
         "-s",
         "--start-date",
         type=validate_date,
@@ -96,20 +104,30 @@ def setup_earthdata_auth():
 def main():
     # Parse input args
     args = parse_arguments()
-    # print(args.product, args.version, args.start_date, args.end_date, sep="\n")
+    # print(args.product, args.version, args.granule_string, args.start_date, args.end_date, sep="\n")
 
     # Authenticate with earthaccess
     setup_earthdata_auth()
 
     # Query results
     print("Querying results...")
-    results = earthaccess.search_data(
-        short_name=args.product,
-        version=args.version,
-        cloud_hosted=True,
-        temporal=(args.start_date, args.end_date),
-        # bounding_box = (-51.96423,68.10554,-48.71969,70.70529)
-    )
+    # Include granule_string only if optional param is set
+    if args.granule_string is not None:
+        results = earthaccess.search_data(
+            short_name=args.product,
+            version=args.version,
+            granule_name=args.granule_string,
+            cloud_hosted=True,
+            temporal=(args.start_date, args.end_date),
+        )
+    else:
+        results = earthaccess.search_data(
+            short_name=args.product,
+            version=args.version,
+            cloud_hosted=True,
+            temporal=(args.start_date, args.end_date),
+        )
+
     # print(len(results))
     # print(results[0])
     if len(results) < 1:
