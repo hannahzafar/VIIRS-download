@@ -10,10 +10,19 @@ results, folder_name = query_files()
 
 # download_results(results, folder_name)
 
-fileobjects = earthaccess.open(results)
-print(fileobjects)
+results = results[0]
+# results = [results[0]]
+print(results)
+print("\n")
+print(earthaccess.open(results))
+print("\n")
+print(earthaccess.open(results)[0])
+print("\n")
+# fileobjects = earthaccess.open(results)
 ds = xr.open_dataset(
-    fileobjects[0],
+    # fileobjects[0],
+    earthaccess.open(results)[0],
+    engine="h5netcdf",
     group="/HDFEOS/GRIDS/VIIRS_Grid_BRDF/Data Fields",
 )
 
