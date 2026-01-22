@@ -101,7 +101,7 @@ def setup_earthdata_auth():
         return None
 
 
-def main():
+def query_files():
     # Parse input args
     args = parse_arguments()
     # print(args.product, args.version, args.granule_string, args.start_date, args.end_date, sep="\n")
@@ -134,22 +134,18 @@ def main():
         print("No matching results found. Check input arguments")
         return
 
-    # Download results
-    download_folder = (
-        f"{args.product}_V{args.version}_{args.start_date}_{args.end_date}"
-    )
+    folder_name = f"{args.product}_V{args.version}_{args.start_date}_{args.end_date}"
+    return results, folder_name
 
+
+def download_results(results, folder_name):
     # Make sure to not overwrite existing
     try:
-        os.makedirs(download_folder, exist_ok=False)
+        os.makedirs(folder_name, exist_ok=False)
     except FileExistsError as e:
         print(e)
         return
 
     # print(download_folder)
-    files = earthaccess.download(results, download_folder)
-    print(f"{len(files)} files downloaded to {download_folder}")
-
-
-if __name__ == "__main__":
-    main()
+    files = earthaccess.download(results, folder_name)
+    print(f"{len(files)} files downloaded to {folder_name}")

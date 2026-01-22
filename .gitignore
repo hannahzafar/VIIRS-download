@@ -6,3 +6,4 @@
 # File downloads
 VNP*/
 granules.txt
+__pycache__/
